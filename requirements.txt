@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-tensorflow
-pandas
-streamlit
-requests
-pyarrow
-numpy<2
