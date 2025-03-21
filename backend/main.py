@@ -3,11 +3,13 @@ import tensorflow as tf
 import numpy as np
 from pydantic import BaseModel
 from typing import List
+import os
 
 app = FastAPI()
 
 # Load your trained LSTM model
-model = tf.keras.models.load_model("model/lstm_model.h5")
+model_path = os.path.join(os.path.dirname(os.getcwd()), "model/lstm_stock_model.h5")
+model = tf.keras.models.load_model(model_path)
 
 class StockInput(BaseModel):
     data: List[float]  # Ensuring a list of floats

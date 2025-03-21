@@ -1,17 +1,29 @@
 import streamlit as st
 import requests
+import numpy as np
 
-st.title("📈 Stock Market Prediction")
+# FastAPI backend URL
+BACKEND_URL = "http://127.0.0.1:8000/predict"
 
-# User input
-st.write("Enter stock data for prediction:")
-user_input = st.text_area("Stock Data (comma-separated):")
+st.title("Stock Price Prediction")
+
+# Input field for stock data
+user_input = st.text_input("Enter stock data (comma-separated values):")
 
 if st.button("Predict"):
     try:
-        data = [float(i) for i in user_input.split(",")]
-        response = requests.post("http://127.0.0.1:8000/predict", json={"data": data})
-        prediction = response.json().get("prediction", "Error in prediction")
-        st.write("### Predicted Stock Price:", prediction)
-    except:
-        st.error("Invalid input. Please enter numerical values separated by commas.")
+        # Convert input to list of floats
+        input_data = [float(x.strip()) for x in user_input.split(",")]
+
+        # Send request to FastAPI backend
+        response = requests.post(BACKEND_URL, json={"data": input_data})
+
+        if response.status_code == 200:
+            prediction = response.json().get("prediction", "Error")
+            st.success(f"Predicted Stock Price: {prediction}")
+        else:
+            st.error("Failed to get a prediction. Check backend logs.")
+
+    except ValueError:
+        st.error("Invalid input! Enter numeric values separated by commas.")
+

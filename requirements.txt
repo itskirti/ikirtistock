@@ -1,0 +1,8 @@
+fastapi[standard]
+uvicorn
+tensorflow
+numpy<2
+pandas
+streamlit
+requests
+pyarrow
